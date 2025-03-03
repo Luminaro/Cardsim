@@ -35,7 +35,11 @@ void rotateCardRelativeToDistanceFromDest(Card* card){
 }
 
 bool mouseOnCard(Card* card){
-    return CheckCollisionPointRec(GetMousePosition(), card->rec);
+    Rectangle real_rec = {
+        card->rec.x - card->rec.width/2, card->rec.y - card->rec.height/2,
+        card->rec.width, card->rec.height
+    };
+    return CheckCollisionPointRec(GetMousePosition(), real_rec);
 }
 int main(){
     InitWindow(800, 800, "Cardsim");
