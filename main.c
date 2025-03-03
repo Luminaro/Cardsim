@@ -1,13 +1,7 @@
-#include "raylib.h"
-
-typedef struct Card{
-    Rectangle rec;
-    Vector2 dest;
-    float rotation;
-    Color color;
-} Card;
+#include "main.h"
 
 void moveCard(Card* card, int speed){
+    rotateCardRelativeToDistanceFromDest(card);
     card->rec.x += (card->dest.x - card->rec.x)*speed*GetFrameTime();
     card->rec.y += (card->dest.y - card->rec.y)*speed*GetFrameTime();
 }
@@ -41,10 +35,11 @@ bool mouseOnCard(Card* card){
     };
     return CheckCollisionPointRec(GetMousePosition(), real_rec);
 }
+
 int main(){
     InitWindow(800, 800, "Cardsim");
     Rectangle rec = {rec.width/2, rec.height/2, 100, 150};
-    Vector2 dest = {rec.width/2, rec.height/2};
+    Vector2 dest = {800, 800};
     Vector2 origin = {rec.width/2, rec.height/2};
     Card card = {rec, dest, 0, BLUE};
     int drag_speed = 10;
@@ -65,7 +60,7 @@ int main(){
             setCardDestToCursor(&card);
         }
         
-        rotateCardRelativeToDistanceFromDest(&card);
+        
         moveCard(&card, drag_speed);
         
         BeginDrawing();
