@@ -37,13 +37,20 @@ bool mouseOnCard(Card* card){
 }
 
 int main(){
+    // setup window
     InitWindow(800, 800, "Cardsim");
+    SetTargetFPS(60);
+    
+    // create card
     Rectangle rec = {rec.width/2, rec.height/2, 100, 150};
-    Vector2 dest = {800, 800};
+    Vector2 dest = {400, 400};
     Vector2 origin = {rec.width/2, rec.height/2};
     Card card = {rec, dest, 0, BLUE};
-    int drag_speed = 10;
-    SetTargetFPS(60);
+    
+    // constants
+    const int drag_speed = 10;
+    
+    // variables
     bool holding = false;
     
     while(!WindowShouldClose()){
