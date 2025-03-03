@@ -1,4 +1,27 @@
 #include "main.h"
+#include <stdlib.h>
+// CardArray START ======================================================================
+CardArray __init__CardArray(int length){
+    Card* arr = malloc(sizeof(Card)*length*2);
+    CardArray CA = {arr, length};
+    return CA;
+}
+void __delete__CardArray(CardArray CA){
+    free(CA.arr);
+}
+
+Card __get__CardArray(CardArray CA, int index){
+    if(index < 0 || index >= CA.length){
+        exit(-1);
+    }
+    return CA.arr[index];
+}
+
+
+// CardArray END ========================================================================
+
+
+
 
 void moveCard(Card* card, int speed){
     rotateCardRelativeToDistanceFromDest(card);
