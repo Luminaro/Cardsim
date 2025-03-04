@@ -65,7 +65,7 @@ int main(){
     SetTargetFPS(60);
     
     // create card
-    Rectangle rec = {rec.width/2, rec.height/2, 100, 150};
+    Rectangle rec = {50, 50, 100, 150};
     Vector2 dest = {400, 400};
     Vector2 origin = {rec.width/2, rec.height/2};
     Card card = {rec, dest, 0, BLUE};
