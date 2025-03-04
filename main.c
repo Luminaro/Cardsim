@@ -58,17 +58,32 @@ bool mouseOnCard(Card* card){
     };
     return CheckCollisionPointRec(GetMousePosition(), real_rec);
 }
-
+void drawCards(Card* cards, int num_cards){
+    for(int i=0; i<num_cards; i++){
+        Card card = cards[i];
+        DrawRectanglePro(card.rec, origin, card.rotation, card.color);
+    }
+}
+void moveCards(Card* cards, int num_cards, int speed){
+    for(int i-0; i<num_cards; i++){
+        moveCard(&(card[i]), speed);
+    }
+}
 int main(){
     // setup window
     InitWindow(800, 800, "Cardsim");
     SetTargetFPS(60);
     
-    // create card
+    // create card array
+    int num_cards = 20;
+    Card cards[num_cards];
     Rectangle rec = {50, 50, 100, 150};
-    Vector2 dest = {400, 400};
     Vector2 origin = {rec.width/2, rec.height/2};
-    Card card = {rec, dest, 0, BLUE};
+    for(int i=0; i<20; i++){
+        Card card = {rec, dest, 0, BLUE};
+        Vector2 dest = {400, 400 + 10*i};
+    }
+    
     
     // constants
     const int drag_speed = 10;
@@ -76,26 +91,12 @@ int main(){
     // variables
     bool holding = false;
     
-    while(!WindowShouldClose()){
-        
-        if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && mouseOnCard(&card)){
-            holding = true;
-        }
-        
-        if(holding && IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
-            holding = false;
-        }
-        
-        if(holding){
-            setCardDestToCursor(&card);
-        }
-        
-        
-        moveCard(&card, drag_speed);
+    
+    while(!WindowShouldClose()){        
         
         BeginDrawing();
             ClearBackground(WHITE);
-            DrawRectanglePro(card.rec, origin, card.rotation, card.color);
+            drawCards(cards, num_cards, drag_speed);
         EndDrawing();
     }
     CloseWindow();

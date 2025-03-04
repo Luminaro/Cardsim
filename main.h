@@ -20,6 +20,8 @@ void setDest(Card* card, float x, float y);
 void setCardDestToCursor(Card* card);
 void rotateCardRelativeToDistanceFromDest(Card* card);
 bool mouseOnCard(Card* card);
+void drawCards(Card* cards, int num_cards);
+void moveCards(Card* cards, int num_cards);
 
 // CardArray
 CardArray __init__CardArray(int length);
