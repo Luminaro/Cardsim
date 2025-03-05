@@ -6,6 +6,7 @@ typedef struct Card{
     Vector2 dest;
     float rotation;
     Color color;
+    Vector2 origin;
 } Card;
 
 typedef struct CardArray{
@@ -21,7 +22,7 @@ void setCardDestToCursor(Card* card);
 void rotateCardRelativeToDistanceFromDest(Card* card);
 bool mouseOnCard(Card* card);
 void drawCards(Card* cards, int num_cards);
-void moveCards(Card* cards, int num_cards);
+void moveCards(Card* cards, int num_cards, int speed);
 
 // CardArray
 CardArray __init__CardArray(int length);

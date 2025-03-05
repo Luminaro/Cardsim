@@ -1,24 +1,5 @@
 #include "main.h"
 #include <stdlib.h>
-// CardArray START ======================================================================
-CardArray __init__CardArray(int length){
-    Card* arr = malloc(sizeof(Card)*length*2);
-    CardArray CA = {arr, length};
-    return CA;
-}
-void __delete__CardArray(CardArray CA){
-    free(CA.arr);
-}
-
-Card __get__CardArray(CardArray CA, int index){
-    if(index < 0 || index >= CA.length){
-        exit(-1);
-    }
-    return CA.arr[index];
-}
-
-
-// CardArray END ========================================================================
 
 
 
@@ -59,14 +40,20 @@ bool mouseOnCard(Card* card){
     return CheckCollisionPointRec(GetMousePosition(), real_rec);
 }
 void drawCards(Card* cards, int num_cards){
+    int outline_weight = 10;
+    Color outline_color = BLACK;
     for(int i=0; i<num_cards; i++){
         Card card = cards[i];
-        DrawRectanglePro(card.rec, origin, card.rotation, card.color);
+        Rectangle outline = {card.rec.x - outline_weight/2, card.rec.y - outline_weight/2,
+                             card.rec.width + outline_weight, card.rec.height + outline_weight};
+        DrawRectanglePro(outline, card.origin, card.rotation, outline_color);
+        DrawRectanglePro(card.rec, card.origin, card.rotation, card.color);
+        
     }
 }
 void moveCards(Card* cards, int num_cards, int speed){
-    for(int i-0; i<num_cards; i++){
-        moveCard(&(card[i]), speed);
+    for(int i=0; i<num_cards; i++){
+        moveCard(&(cards[i]), speed);
     }
 }
 int main(){
@@ -80,8 +67,9 @@ int main(){
     Rectangle rec = {50, 50, 100, 150};
     Vector2 origin = {rec.width/2, rec.height/2};
     for(int i=0; i<20; i++){
-        Card card = {rec, dest, 0, BLUE};
-        Vector2 dest = {400, 400 + 10*i};
+        Vector2 dest = {10*i, 100};
+        Card card = {rec, dest, 0, BLUE, origin};
+        cards[i] = card;
     }
     
     
@@ -93,10 +81,34 @@ int main(){
     
     
     while(!WindowShouldClose()){        
+        if( IsMouseButtonPressed(MOUSE_BUTTON_LEFT) ){
+            int clicked_card_index = -1;
+            for(int i=num_cards-1; i>=0; i--){
+                if(mouseOnCard( &(cards[i]) )){
+                    clicked_card_index = i;
+                    break;
+                }
+            }
+            if(clicked_card_index != -1){
+                holding = !holding;
+            }
+            
+            if(holding){
+                Card clicked_card = cards[clicked_card_index];
+                for(int i=clicked_card_index; i<num_cards-1; i++){
+                    cards[i] = cards[i+1];
+                }
+                cards[num_cards-1] = clicked_card;
+            }
+        }
         
+        if(holding){
+            cards[num_cards-1].dest = GetMousePosition();   
+        }
+        moveCards(cards, num_cards, drag_speed);
         BeginDrawing();
             ClearBackground(WHITE);
-            drawCards(cards, num_cards, drag_speed);
+            drawCards(cards, num_cards);
         EndDrawing();
     }
     CloseWindow();
